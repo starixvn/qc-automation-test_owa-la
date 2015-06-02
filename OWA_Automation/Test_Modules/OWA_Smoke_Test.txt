@@ -1,5 +1,5 @@
 *** Settings ***
-Suite Setup       config local
+Suite Setup       config
 Suite Teardown    Close Browser
 Test Teardown
 Library           Selenium2Library
@@ -35,7 +35,7 @@ TM_01_ST_Total Transaction
     check notes button
     # 3. Submit filters
     submit filters for total transaction    ${from}    ${to}    None    Soccer
-    take applications screenshot    Local    TM_01_ST_Total_Transaction.jpg
+    take applications screenshot    Product    TM_01_ST_Total_Transaction.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -58,8 +58,8 @@ TM_02_ST_WinLossReport_Sportsbook
     # Type = Normal
     # sportsbook the same number game
     ${currency}=    Set Variable    MYR
-    submit filters for sportsbook/number game    asiabet88 (Fun88)    ${currency}    GBP    ${from}    ${to}    Normal
-    take applications screenshot    Local    TM_02_ST_WinLossReport_Sportsbook.jpg
+    submit filters for sportsbook/number game    12Bet    ${currency}    GBP    ${from}    ${to}    Normal
+    take applications screenshot    Product    TM_02_ST_WinLossReport_Sportsbook.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -87,8 +87,8 @@ TM_03_ST_WinLossReport_Number Game
     # based = GBP
     # date =
     # Type = Normal
-    submit filters for sportsbook/number game    12Bet (12Bet1)    All    GBP    ${from}    ${to}    Normal
-    take applications screenshot    Local    TM_03_ST_WinLossReport_NumberGame.jpg
+    submit filters for sportsbook/number game    12Bet    All    GBP    ${from}    ${to}    Normal
+    take applications screenshot    Product    TM_03_ST_WinLossReport_NumberGame.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -109,9 +109,9 @@ TM_04_ST_WinLossReport_Virtual Sports
     # based = GBP
     # date =
     # Type = Normal
-    submit filters for virtual sports    12Bet (12Bet1)    Virtual Cycling, Virtual Greyhounds, Virtual Horse Racing, Virtual Speedway, Virtual Tennis    All    ${from}    ${to}    Normal
+    submit filters for virtual sports    12Bet    Virtual Cycling, Virtual Greyhounds, Virtual Horse Racing, Virtual Speedway, Virtual Tennis    All    ${from}    ${to}    Normal
     ...    GBP
-    take applications screenshot    Local    TM_04_ST_WinLossReport_VirtualSports.jpg
+    take applications screenshot    Product    TM_04_ST_WinLossReport_VirtualSports.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -136,9 +136,9 @@ TM_05_ST_WinLossReport_Live Casino
     # date =
     # game type = All
     # Type = Normal
-    submit filters for live casino    12Bet (12Bet1)    All    GBP    ${from}    ${to}    All
+    submit filters for live casino    12Bet    All    GBP    ${from}    ${to}    All
     ...    Normal
-    take applications screenshot    Local    TM_05_ST_WinLossReport_Live_Casino.jpg
+    take applications screenshot    Product    TM_05_ST_WinLossReport_Live_Casino.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -160,7 +160,7 @@ TM_06_ST_WinLossReport_BA Win Loss
     # date =
     # Type = Normal
     submit filters for ba winloss    DELA (1bet)    ALL    GBP    ${from}    ${to}    Normal
-    take applications screenshot    Local    TM_06_ST_WinLossReport_BA_Win_Loss.jpg
+    take applications screenshot    Product    TM_06_ST_WinLossReport_BA_Win_Loss.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -177,7 +177,7 @@ TM_07_ST_Win Loss Report_AG Casino
     select menu    Win Loss Report    AG Casino
     # 2. Select filters then click Submit button
     submit filters for ag casino/gold deluxe    All    ${from}    ${to}    GBP    All    Normal
-    take applications screenshot    Local    TM_07_ST_WinLossReport_AG_Casino.jpg
+    take applications screenshot    Product    TM_07_ST_WinLossReport_AG_Casino.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -193,8 +193,8 @@ TM_08_ST_WinLossReport_Gold Deluxe
     # 1. Select Win Loss Report/ Sportsbook
     select menu    Win Loss Report    Gold Deluxe
     # 2. Submit filters
-    submit filters for ag casino/gold deluxe    12Bet (12Bet1), spondemo    ${from}    ${to}    GBP    All    No Draw for Turnover only
-    take applications screenshot    Local    TM_08_ST_WinLossReport_Gold_Deluxe.jpg
+    submit filters for ag casino/gold deluxe    12Bet, spondemo    ${from}    ${to}    GBP    All    No Draw for Turnover only
+    take applications screenshot    Product    TM_08_ST_WinLossReport_Gold_Deluxe.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -211,7 +211,7 @@ TM_09_ST_SunSport Win Loss
     select menu    SunSport Win Loss
     # 2. Submit filters
     submit filters for sunsport winloss    ALL    Monthly    Date Range    ${from}    ${to}    No Draw
-    take applications screenshot    Local    TM_09_ST_SunSport_Win_Loss.jpg
+    take applications screenshot    Product    TM_09_ST_SunSport_Win_Loss.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
