@@ -1,0 +1,133 @@
+*** Settings ***
+Library           Selenium2Library
+Library           String
+Library           OperatingSystem
+Library           Collections
+Library           Dialogs
+Library           Screenshot
+Resource          ../../Interfaces/01_Main_Interfaces/interface_main.txt
+Resource          ../01_Main_Actions/action_main.txt
+
+*** Keywords ***
+submit filters for sportsbook/number game
+    [Arguments]    ${licensee}    ${currency}    ${basecurrency}    ${from_date}    ${to_date}    ${draw type}
+    [Documentation]    This actions is used to submit filters for Sportsbook Win Loss report and Number Game Win Loss report.
+    ...
+    ...    ${draw type} = *'Normal'* or *'No Draw'* or *'No Draw for Turnover only'*
+    ...
+    ...    Example:
+    ...
+    ...    submit filters for sportsbook/number game | 12Bet | All | GBP | 2015-05-20 | 2015-05-25 | Normal
+    # select licensee
+    Select From List By Label    ${lstLicensee}    ${licensee}
+    # select currency
+    Select From List By Label    ${lstCurrency}    ${currency}
+    # select Display total value in
+    Run Keyword If    '${basecurrency}'!='None'    Select From List By Label    ${lstBaseCurrency}    ${basecurrency}
+    # select date range
+    Run Keyword If    '${from_date}' != 'None' and '${to_date}'!= 'None'    select date range    ${from_date}    ${to_date}
+    # select Type
+    Run Keyword If    '${draw type}' != 'None'    select draw type    ${draw type}
+    # click submit
+    Click Element    ${btnSubmit}
+
+submit filters for virtual sports
+    [Arguments]    ${licensee}    ${sport}    ${currency}    ${from_date}    ${to_date}    ${draw type}
+    ...    ${basecurrency}
+    [Documentation]    This actions is used to submit filters for Virtual Sports Win Loss report.
+    ...
+    ...    ${sport} = *'All'* or *'Virtual Cycling'* or *'Virtual Greyhounds'* or *'Virtual Horse Racing'* or *'Virtual Motosports'* or *'Virtual Soccer'* or *'Virtual Speedway'* or *'Virtual Tennis'*
+    ...
+    ...    ${draw type} = *'Normal'* or *'No Draw'* or *'No Draw for Turnover only'*
+    ...
+    ...    Example:
+    ...
+    ...    submit filters for virtual sports | 12Bet | Virtual Cycling, Virtual Greyhounds | All | 2015-05-20 | 2015-05-25 | Normal | GBP
+    # select sport
+    # uncheck all sports
+    Unselect Checkbox    ${chkAllSports}
+    # select specified sports
+    select sports from picker    ${sport}
+    # select licensee
+    Select From List By Label    ${lstLicensee}    ${licensee}
+    # select currency
+    Select From List By Label    ${lstCurrency}    ${currency}
+    # select date range
+    Run Keyword If    '${from_date}' != 'None' and '${to_date}'!= 'None'    select date range    ${from_date}    ${to_date}
+    # select Type
+    Run Keyword If    '${draw type}' != 'None'    select draw type    ${draw type}
+    # select Display total value in
+    Run Keyword If    '${basecurrency}'!='None'    Select From List By Label    ${lstBaseCurrency}    ${basecurrency}
+    # click submit
+    Click Element    ${btnSubmit}
+
+submit filters for live casino
+    [Arguments]    ${licensee}    ${currency}    ${basecurrency}    ${from_date}    ${to_date}    ${gametype}
+    ...    ${draw type}
+    [Documentation]    This actions is used to submit filters for Live Casino Win Loss report.
+    ...
+    ...    ${draw type} = *'Normal'* or *'No Draw'* or *'No Draw for Turnover only'*
+    ...
+    ...    Example:
+    ...
+    ...    submit filters for live casino | 12Bet | All | GBP | 2015-05-20 | 2015-05-25 | Live Baccarat | Normal
+    # select licensee
+    Select From List By Label    ${lstLicensee}    ${licensee}
+    # select currency
+    Select From List By Label    ${lstCurrency}    ${currency}
+    # select Display total value in
+    Run Keyword If    '${basecurrency}'!='None'    Select From List By Label    ${lstBaseCurrency}    ${basecurrency}
+    # select date range
+    Run Keyword If    '${from_date}' != 'None' and '${to_date}'!= 'None'    select date range    ${from_date}    ${to_date}
+    # select Game Type
+    Run Keyword If    '${gametype}' != 'None'    Select From List By Label    ${lstGameType}    ${gametype}
+    # select Type
+    Run Keyword If    '${draw type}' != 'None'    select draw type    ${draw type}
+    # click submit
+    Click Element    ${btnSubmit}
+
+submit filters for ba winloss
+    [Arguments]    ${licensee}    ${currency}    ${basecurrency}    ${from_date}    ${to_date}    ${draw type}
+    [Documentation]    This actions is used to submit filters for BA Win Loss report.
+    ...
+    ...    ${draw type} = *'Normal'* or *'No Draw'* or *'No Draw for Turnover only'*
+    ...
+    ...    Example:
+    ...
+    ...    submit filters for ba winloss | 12Bet(12bet1) | ALL | GBP | 2015-05-20 | 2015-05-25 | Normal
+    # select licensee
+    Run Keyword If    '${licensee}' != 'None'    Select From List By Label    ${lstLicensee}    ${licensee}
+    # select currency
+    Run Keyword If    '${currency}' != 'None'    Select From List By Label    ${lstCurrency}    ${currency}
+    # select Display total value in
+    Run Keyword If    '${basecurrency}'!='None'    Select From List By Label    ${lstBaseCurrencyForBA}    ${basecurrency}
+    # select date range
+    Run Keyword If    '${from_date}' != 'None' and '${to_date}'!= 'None'    select date range    ${from_date}    ${to_date}
+    # select Type
+    Run Keyword If    '${draw type}' != 'None'    select draw type    ${draw type}
+    # click submit
+    Click Element    ${btnSubmit}
+
+submit filters for ag casino/gold deluxe
+    [Arguments]    ${licensee}    ${from_date}    ${to_date}    ${basecurrency}    ${currency}    ${draw type}
+    [Documentation]    This actions is used to submit filters for AG Casnio Win Loss report and Gold Deluxe Win Loss report.
+    ...
+    ...    ${licensee} = *'All'* or list of licensees (12Bet, asiabet88, etc.)
+    ...
+    ...    ${draw filter} = *'Normal'* or *'No Draw'* or *'No Draw for Turnover only'*
+    ...
+    ...    Example:
+    ...
+    ...    submit filters for ag casino/gold deluxe | 12Bet(12bet1) | 2015-05-20 | 2015-05-25 | GBP | All | Normal
+    # select licensee
+    Run Keyword If    '${licensee}' != 'None'    select licensee from picker    ${licensee}
+    # select date range
+    Run Keyword If    '${from_date}' != 'None' and '${to_date}'!= 'None'    select date range    ${from_date}    ${to_date}
+    # select Display total value in
+    Run Keyword If    '${basecurrency}'!='None'    Select From List By Label    ${lstBaseCurrency}    ${basecurrency}
+    # select currency
+    Run Keyword If    '${currency}' != 'None'    Select From List    id=ddlCurrency    ${currency}
+    # select Type
+    Run Keyword If    '${draw type}' != 'None'    select draw type    ${draw type}
+    # click Submit button
+    Click Button    ${btnSubmit}

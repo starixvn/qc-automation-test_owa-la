@@ -1,0 +1,32 @@
+*** Variables ***
+${btnLogout}      xpath=//a[@title='Logout']    # Logout button in OWA page
+${btnSubmit}      xpath=//input[@class='btn' and @type='submit']    # Submit button on OWA pages
+${dtpMonth}       xpath=//*[@id='monPickrId']/input    # Month picker on OWA site
+${lstFromDay}     xpath=//div[@id='fromDay']/a    # From date listbox on OWA site
+${lstToDay}       xpath=//div[@id='toDay']/a/span    # To date listbox on OWA site
+${lstLicensee}    xpath=//*[@name='LicenseeId']    # Licensee listbox on OWA report filter
+${lstSports}      xpath=//select[@id='ddlSport']    # Sport type drop down list
+${lstCurrency}    xpath=//*[@name='CurrencyId']    # Currency listbox on OWA report filter
+${lstBaseCurrency}    xpath=//*[@id='ddlDisplayCurrency']    # Base Currency listbox on OWA report filter
+${lstGameType}    xpath=//*[@id='GameType']    # Game Type listbox on OWA report filter
+${notes_tooltip}    xpath=//div[@class='note-helper-all-note']    # Notes content tooltip on OWA site
+${tblReport}      xpath=//div[@class='partial-report'][2]    # Report table on OWA pages
+${rbNormal}       xpath=//*[@id='type-normal']    # Normal radio button of the filter 'Draw filter'
+${rbNoDraws}      xpath=//*[@id='type-nodraw']    # No Draw radio button of the filter 'Draw filter'
+${rbNoDrawsForTurnover}    xpath=//*[@id='type-nodraw-for-turnover-only']    # No Draw for Turnover only radio button of the filter 'Draw filter'
+${btnShowNotes}    xpath=//div[@title='Show Notes']    # Show notes button on OWA pages
+${btnHideNotes}    xpath=//div[@title='Hide Notes']    # Hide notes button on OWA pages
+${btnExportToExcel}    xpath=//*[contains(@id,'btnExportExcel')]    # Export To Excel button on OWA pages
+${lstDate}        //select[@id='DateOption']    # Date listbox on OWA site
+${from_date_picker}    xpath=//a[@id='fd-but-FromDate']    # From date picker button on OWA site
+${to_date_picker}    xpath=//a[@id='fd-but-ToDate']    # To date picker button on OWA site
+${from_date_picker_today}    xpath=//span[@id='FromDate-today-but']    # Today on From date picker
+${to_date_picker_today}    xpath=//span[@id='ToDate-today-but']    # Today on To date picker
+${date_picker_month}    //span[@class='month-display drag-enabled']
+${date_picker_year}    //span[@class='year-display drag-enabled']    # Year displayed on date picker
+${date_picker_previous_month}    //span[@title='Previous month']    # Previous month button on date picker
+${date_picker_next_month}    //span[@title='Next month']    # Next month button on date picker
+${date_picker_previous_year}    //span[@title='Previous year']    # Previous year button on date picker
+${lstBaseCurrencyForBA}    xpath=//*[@id='BaseCurrency']    # Base Currency listbox on BA Win Loss report
+${rbReportDaily}    //input[@id='group-by-daily']    # Daily radio button of filter 'Report By'
+${rbReportMonthly}    //input[@id='group-by-monthly']    # Monthly radio button of filter 'Report By'

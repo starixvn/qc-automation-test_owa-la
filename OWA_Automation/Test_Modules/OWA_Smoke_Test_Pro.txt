@@ -1,0 +1,224 @@
+*** Settings ***
+Suite Setup       config
+Suite Teardown    Close Browser
+Test Teardown
+Library           Selenium2Library
+Library           OperatingSystem
+Library           Screenshot
+Library           Collections
+Library           String
+Library           Dialogs
+Library           Process
+Resource          ../Interfaces/01_Main_Interfaces/interface_login.txt
+Resource          ../Interfaces/01_Main_Interfaces/interface_main.txt
+Resource          ../Actions/01_Main_Actions/action_main.txt
+Resource          ../Actions/02_Total_Transaction/action_total_transaction.txt
+Resource          ../Actions/03_Win_Loss_Report/action_winloss_report.txt
+Resource          ../Actions/04_SunSport_Win_Loss/action_sunsport_winloss.txt
+Resource          ../Interfaces/03_Win_Loss_Report/interface_winloss_report.txt
+
+*** Test Cases ***
+TM_00_ST_Start web
+    [Tags]    CI
+    # 1. Open testing site
+    Open Browser    ${cf_url}    ${cf_browser}    ff_profile_dir=${cf_ff_profile_dir}
+    Maximize Browser Window
+    # 2. Login with valid account
+    login    ${cf_username}    ${cf_password}
+
+TM_01_ST_Total Transaction
+    ${from}=    Get Time    \    ${cf_from}
+    ${to}=    Get Time    \    ${cf_to}
+    # 1. Select Total Transaction report
+    select menu    Total Transaction
+    # 2. Show/hide Notes
+    check notes button
+    # 3. Submit filters
+    submit filters for total transaction    ${from}    ${to}    None    Soccer
+    take applications screenshot    Product    TM_01_ST_Total_Transaction.jpg
+    # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
+    check special case when no info available
+    # VP. Check data table
+    check element on report    ${tblReport}
+    # VP. Check export file
+    ${tm_exportFrom}=    convert date into full month    ${from}
+    ${tm_exportTo}=    convert date into full month    ${to}
+    check export excel function    TotalTransaction.from.${tm_exportFrom}.to.${tm_exportTo}.xls
+
+TM_02_ST_WinLossReport_Sportsbook
+    ${from}=    Get Time    \    ${cf_from}
+    ${to}=    Get Time    \    ${cf_to}
+    # 1. Select Win Loss Report/ Sportsbook
+    select menu    Win Loss Report    Sportsbook
+    # 2. Select filters then click Submit button
+    # licensee = 12 bet
+    # currency = ALL
+    # based = GBP
+    # date =
+    # Type = Normal
+    # sportsbook the same number game
+    ${currency}=    Set Variable    MYR
+    submit filters for sportsbook/number game    12Bet    ${currency}    GBP    ${from}    ${to}    Normal
+    take applications screenshot    Product    TM_02_ST_WinLossReport_Sportsbook.jpg
+    # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
+    check special case when no info available
+    # VP. Check data table
+    check element on report    ${tblReport}
+    # VP. Check export file
+    ${tm_equalDate}    Run Keyword And Return Status    Should Be Equal    ${from}    ${to}
+    ${tm_exportFrom}=    convert date into full month    ${from}
+    ${tm_exportTo}=    convert date into full month    ${to}
+    ${tm_exportCurrency}=    Set Variable If    '${currency}'=='All'    all.currencies    '${currency}'=='Base Currency-EUR'    Base.Currency-EUR    '${currency}'=='Base Currency-GBP'
+    ...    Base.Currency-GBP    ${currency}
+    LOG    ${tm_exportCurrency}
+    Run Keyword If    '${tm_equalDate}'!='True'    check export excel function    Sportsbook-Win.Loss.Report.from.${tm_exportFrom}.to.${tm_exportTo}.in.${tm_exportCurrency}.xls
+    Run Keyword If    '${tm_equalDate}'=='True'    check export excel function    Sportsbook-Win.Loss.Report.on.${tm_exportFrom}.in.${tm_exportCurrency}.xls
+
+TM_03_ST_WinLossReport_Number Game
+    ${from}=    Get Time    \    ${cf_from}
+    ${to}=    Get Time    \    ${cf_to}
+    # 1. Select Win Loss Report/ Number Game
+    select menu    Win Loss Report    Number Game
+    # 2. Show/hide Notes
+    check notes button
+    # 3. Select filters then click Submit button
+    # licensee = 12 bet
+    # currency = ALL
+    # based = GBP
+    # date =
+    # Type = Normal
+    submit filters for sportsbook/number game    12Bet    All    GBP    ${from}    ${to}    Normal
+    take applications screenshot    Product    TM_03_ST_WinLossReport_NumberGame.jpg
+    # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
+    check special case when no info available
+    # VP. Check data table
+    check element on report    ${tblReport}
+    # VP. Check export file
+    ${tm_exportFrom}=    convert date into full month    ${from}
+    ${tm_exportTo}=    convert date into full month    ${to}
+    check export excel function    NumberGame-WinLossReport.from.${tm_exportFrom}.to.${tm_exportTo}.xls
+
+TM_04_ST_WinLossReport_Virtual Sports
+    ${from}=    Get Time    \    ${cf_from}
+    ${to}=    Get Time    \    ${cf_to}
+    # 1. Select Win Loss Report/ Virtual Sports
+    select menu    Win Loss Report    Virtual Sports
+    # 2. Select filters then click Submit button
+    # licensee = 12 bet
+    # currency = ALL
+    # based = GBP
+    # date =
+    # Type = Normal
+    submit filters for virtual sports    12Bet    Virtual Cycling, Virtual Greyhounds, Virtual Horse Racing, Virtual Speedway, Virtual Tennis    All    ${from}    ${to}    Normal
+    ...    GBP
+    take applications screenshot    Product    TM_04_ST_WinLossReport_VirtualSports.jpg
+    # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
+    check special case when no info available
+    # VP. Check data table
+    check element on report    ${tblReport}
+    # VP. Check export file
+    ${tm_exportFrom}=    convert date into full month    ${from}
+    ${tm_exportTo}=    convert date into full month    ${to}
+    # 3. export excel
+    check export excel function    VirtualSports-WinLossReport.from.${tm_exportFrom}.to.${tm_exportTo}.xls
+
+TM_05_ST_WinLossReport_Live Casino
+    ${from}=    Get Time    \    ${cf_from}
+    ${to}=    Get Time    \    ${cf_to}
+    # 1. Select Win Loss Report/ Live Casino
+    select menu    Win Loss Report    Live Casino
+    # 2. Show/hide Notes
+    check notes button
+    # 3. Select filters then click Submit button
+    # licensee = 12 bet
+    # currency = ALL
+    # based = GBP
+    # date =
+    # game type = All
+    # Type = Normal
+    submit filters for live casino    12Bet    All    GBP    ${from}    ${to}    All
+    ...    Normal
+    take applications screenshot    Product    TM_05_ST_WinLossReport_Live_Casino.jpg
+    # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
+    check special case when no info available
+    # VP. Check data table
+    check element on report    ${tblReport}
+    # VP. Check export file
+    ${tm_exportFrom}=    convert date into full month    ${from}
+    ${tm_exportTo}=    convert date into full month    ${to}
+    check export excel function    LiveCasino-WinLossReport.from.${tm_exportFrom}.to.${tm_exportTo}.xls
+
+TM_06_ST_WinLossReport_BA Win Loss
+    ${from}=    Get Time    \    ${cf_from}
+    ${to}=    Get Time    \    ${cf_to}
+    # 1. Select Win Loss Report/ BA Win Loss
+    select menu    Win Loss Report    BA Win Loss
+    # 2. Select filters then click Submit button
+    # licensee = 12 bet
+    # currency = ALL
+    # based = GBP
+    # date =
+    # Type = Normal
+    submit filters for ba winloss    DELA (1bet)    ALL    GBP    ${from}    ${to}    Normal
+    take applications screenshot    Product    TM_06_ST_WinLossReport_BA_Win_Loss.jpg
+    # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
+    check special case when no info available
+    # VP. Check data table
+    check element on report    ${tblReport}
+    # VP. Check export file
+    ${tm_exportFrom}=    convert date into full month    ${from}
+    ${tm_exportTo}=    convert date into full month    ${to}
+    check export excel function    BA-WinLossReport.from.${tm_exportFrom}.to.${tm_exportTo}.xls
+
+TM_07_ST_Win Loss Report_AG Casino
+    ${from}=    Get Time    \    ${cf_from}
+    ${to}=    Get Time    \    ${cf_to}
+    # 1. Select Win Loss Report/ AG Casino report
+    select menu    Win Loss Report    AG Casino
+    # 2. Select filters then click Submit button
+    submit filters for ag casino/gold deluxe    All    ${from}    ${to}    GBP    All    Normal
+    take applications screenshot    Product    TM_07_ST_WinLossReport_AG_Casino.jpg
+    # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
+    check special case when no info available
+    # VP. Check data table
+    check element on report    ${tblReport}
+    # VP. Check export file
+    ${tm_exportFrom}=    convert date into full month    ${from}
+    ${tm_exportTo}=    convert date into full month    ${to}
+    check export excel function    AGCasinoWinLoss.from.${tm_exportFrom}.to.${tm_exportTo}.xls
+
+TM_08_ST_WinLossReport_Gold Deluxe
+    ${from}=    Get Time    \    ${cf_from}
+    ${to}=    Get Time    \    ${cf_to}
+    # 1. Select Win Loss Report/ Sportsbook
+    select menu    Win Loss Report    Gold Deluxe
+    # 2. Submit filters
+    submit filters for ag casino/gold deluxe    12Bet, spondemo    ${from}    ${to}    GBP    All    No Draw for Turnover only
+    take applications screenshot    Product    TM_08_ST_WinLossReport_Gold_Deluxe.jpg
+    # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
+    check special case when no info available
+    # VP. Check data table
+    check element on report    ${tblReport}
+    # VP. Check export file
+    ${tm_exportFrom}=    convert date into full month    ${from}
+    ${tm_exportTo}=    convert date into full month    ${to}
+    check export excel function    GoldDeluxeWinLoss.from.${tm_exportFrom}.to.${tm_exportTo}.xls
+
+TM_09_ST_SunSport Win Loss
+    ${from}=    Get Time    \    NOW - 40d
+    ${to}=    Get Time    \    NOW - 32d
+    # 1. Select SunSport Win Loss report
+    select menu    SunSport Win Loss
+    # 2. Submit filters
+    submit filters for sunsport winloss    ALL    Monthly    Date Range    ${from}    ${to}    No Draw
+    take applications screenshot    Product    TM_09_ST_SunSport_Win_Loss.jpg
+    # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
+    check special case when no info available
+    # VP. Check data table
+    check element on report    ${tblReport}
+    # VP. Check export file
+    ${tm_fromDate_value}=    Get Value    xpath=//input[@id='FromDate' and @type='text']
+    ${tm_toDate_value}=    Get Value    xpath=//input[@id='ToDate' and @type='text']
+    ${tm_exportFrom}=    convert date into month date year    ${tm_fromDate_value}
+    ${tm_exportTo}=    convert date into month date year    ${tm_toDate_value}
+    check export excel function    SunSportWinLossReport.from.${tm_exportFrom}.to.${tm_exportTo}.xls

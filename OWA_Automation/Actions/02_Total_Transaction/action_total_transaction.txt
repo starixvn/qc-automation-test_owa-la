@@ -1,0 +1,26 @@
+*** Settings ***
+Library           Selenium2Library
+Library           String
+Library           OperatingSystem
+Library           Collections
+Library           Dialogs
+Library           Screenshot
+Resource          ../../Interfaces/01_Main_Interfaces/interface_main.txt
+Resource          ../01_Main_Actions/action_main.txt
+
+*** Keywords ***
+submit filters for total transaction
+    [Arguments]    ${from_date}    ${to_date}    ${licensee}    ${sport}='All'
+    [Documentation]    This action is used to submit filters for Total Transaction report.
+    ...
+    ...    Example:
+    ...
+    ...    submit filters for total transaction | 2015-05-20 | 2015-05-25 | All | Soccer
+    # select date range
+    Run Keyword If    '${from_date}' != 'None' and '${to_date}'!= 'None'    select date range    ${from_date}    ${to_date}
+    # select licensee
+    Run Keyword If    '${licensee}' != 'None'    select licensee from picker    ${licensee}
+    # select Sports listbox
+    Run Keyword If    '${sport}' != 'None'    Select From List By Label    ${lstSports}    ${sport}
+    # click Submit button
+    Click Element    ${btnSubmit}

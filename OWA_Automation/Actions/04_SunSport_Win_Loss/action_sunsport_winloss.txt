@@ -1,0 +1,35 @@
+*** Settings ***
+Library           Selenium2Library
+Library           String
+Library           OperatingSystem
+Library           Collections
+Library           Dialogs
+Library           Screenshot
+Resource          ../../Interfaces/01_Main_Interfaces/interface_main.txt
+Resource          ../01_Main_Actions/action_main.txt
+
+*** Keywords ***
+submit filters for sunsport winloss
+    [Arguments]    ${currency}    ${report by}    ${date option}    ${from date}='None'    ${to date}='None'    ${draw type}='None'
+    [Documentation]    This action is used to submit filters for SunSport Win Loss report.
+    ...
+    ...    ${report by} = *'Daily'* or *'Monthly'*
+    ...
+    ...    ${date option} = *'Date Range'* or *'Today'* or *'Yesterday'* or *'Current Week'* or *'Last Week'* or *'Current Month'* or *'Last Month'* or *'Since Last Month'*
+    ...
+    ...    ${draw type} = *'Normal'* or *'No Draw'* or *'No Draw for Turnover only'*
+    ...
+    ...    Example:
+    ...
+    ...    submit filters for sunsport winloss | ALL | Monthly| Date Range | 2015-05-20 | 2015-05-25 | Normal
+    # select Curency
+    Select From List By Label    ${lstCurrency}    ${currency}
+    # select Report By
+    Run Keyword If    '${report by}'=='Dailyl'    Click Element    ${rbReportDaily}
+    Run Keyword If    '${report by}'=='Monthly'    Click Element    ${rbReportMonthly}
+    # select Type
+    Run Keyword If    '${draw type}' != 'None'    select draw type    ${draw type}
+    # select Date
+    select date    ${date option}    ${from date}    ${to date}
+    # click Submit button
+    Click Element    ${btnSubmit}

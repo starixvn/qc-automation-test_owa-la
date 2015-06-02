@@ -1,0 +1,3 @@
+*** Variables ***
+${chkAllLicensees}    id=select-all-licensee    # Checkbox all licensee in ag casino
+${chkAllSports}    xpath=//*[@id='select-all-sports']

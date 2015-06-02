@@ -1,0 +1,414 @@
+*** Settings ***
+Library           Selenium2Library
+Library           String
+Library           OperatingSystem
+Library           Collections
+Library           Dialogs
+Library           Screenshot
+Resource          ../../Interfaces/01_Main_Interfaces/interface_login.txt
+Resource          ../../Interfaces/01_Main_Interfaces/interface_main.txt
+Resource          ../../Interfaces/03_Win_Loss_Report/interface_winloss_report.txt
+
+*** Keywords ***
+config
+    [Documentation]    This action is used to set default configuration for entire scripts.
+    # Set Timing
+    Set Suite Variable    ${cf_speed}    0.4
+    Set Selenium Speed    ${cf_speed}
+    Set Selenium Timeout    60s
+    # Set Browser & URL testing
+    Set Suite Variable    ${cf_browser}    ff
+    Set Suite Variable    ${cf_url}    http://admin.oneworks.com/Auth/Login/
+    Set Suite Variable    ${cf_ff_profile_dir}    C:\\firefox_profile
+    Set Suite Variable    ${cf_export_dir}    C:\\Test Data\\
+    Set Suite Variable    ${cf_screenshot_dir}    C:\\Test Screenshot\\
+    # Set Global Variables
+    Set Suite Variable    ${cf_username}    pgmwilliam
+    Set Suite Variable    ${cf_password}    1234test
+    # Set Global Date Range
+    Set Suite Variable    ${cf_from}    NOW - 10d
+    Set Suite Variable    ${cf_to}    NOW - 2d
+
+config local
+    [Documentation]    This action is used to set default configuration for entire scripts on *Local* environment.
+    # Set Timing
+    Set Suite Variable    ${cf_speed}    0.4
+    Set Selenium Speed    ${cf_speed}
+    Set Selenium Timeout    60s
+    # Set Browser & URL testing
+    Set Suite Variable    ${cf_browser}    ff
+    Set Suite Variable    ${cf_url}    http://10.18.200.209:8004/OWA2/VegasGames
+    Set Suite Variable    ${cf_ff_profile_dir}    C:\\firefox_profile
+    Set Suite Variable    ${cf_export_dir}    C:\\Test Data\\
+    Set Suite Variable    ${cf_screenshot_dir}    C:\\Test Screenshot\\
+    # Set Global Variables
+    Set Suite Variable    ${cf_username}    pgmchris
+    Set Suite Variable    ${cf_password}    1234aa
+    # Set Global Date Range
+    Set Suite Variable    ${cf_from}    NOW - 20d
+    Set Suite Variable    ${cf_to}    NOW - 8d
+
+login
+    [Arguments]    ${username}    ${password}
+    [Documentation]    Type 'username' and 'password' into the textboxes then click Login button
+    # input username & password
+    Input Text    ${txtUsername}    ${username}
+    Input Text    ${txtPassword}    ${password}
+    # click Log In button
+    Click Element    ${btnLogin}
+
+logout
+    [Documentation]    This action is used to logout.
+    # click Logout button
+    ${ac_logout}=    Run Keyword And Return Status    Element Should Be Visible    ${btnLogout}
+    Run Keyword If    '${ac_logout}'=='True'    Click Element    ${btnLogout}
+
+select menu
+    [Arguments]    ${mainmenu}    ${submenu}=None
+    [Documentation]    Give "Main Menu" name and "Sub Menu" name that you want to navigate.
+    ...
+    ...    Example:
+    ...
+    ...    select menu | Total Transaction
+    ...
+    ...    select menu | Win Loss Report | Sportsbook
+    # Click Main Menu label
+    ${ac_menu_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//a[contains(text(),'${mainmenu}')]
+    Run Keyword If    '${ac_menu_status}'=='True'    Click Element    xpath=//a[contains(text(),'${mainmenu}')]
+    # Click Sub Menu label
+    ${ac_submenu_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//a[contains(text(),'${submenu}')]
+    Run Keyword If    '${ac_submenu_status}'=='True'    Click Element    xpath=//a[contains(text(),'${submenu}')]
+    Wait Until Page Contains Element    xpath=//div[@class='panel-content']    150s
+
+convert date format
+    [Arguments]    ${input date}
+    [Documentation]    This action is used to convert date from 'YYYY-MM-DD' format into 'MMM-DD-YYYY' format.
+    ...
+    ...    Example: Convert '2014-01-31' into 'Jan-31-2014'
+    ...
+    ...    ${variable}= | convert date format | 2014-01-31
+    # Cut year, month, date from input date
+    ${yyyy}=    Get Slice From List    ${input date}    0    4
+    ${mm}=    Get Slice From List    ${input date}    5    7
+    ${dd}=    Get Slice From List    ${input date}    8    10
+    # Convert month from number into text
+    ${mm}=    Set Variable If    '${mm}'=='01'    Jan    '${mm}'=='02'    Feb    '${mm}'=='03'
+    ...    Mar    '${mm}'=='04'    Apr    '${mm}'=='05'    May    '${mm}'=='06'
+    ...    Jun    '${mm}'=='07'    Jul    '${mm}'=='08'    Aug    '${mm}'=='09'
+    ...    Sep    '${mm}'=='10'    Oct    '${mm}'=='11'    Nov    '${mm}'=='12'
+    ...    Dec
+    # Return converted date
+    ${output date}=    Set Variable    ${mm}-${dd}-${yyyy}
+    [Return]    ${output date}
+
+convert date into full month
+    [Arguments]    ${input date}
+    [Documentation]    This action is used to convert date from 'YYYY-MM-DD' format into 'MMMM-DD-YYYY' format.
+    ...
+    ...    Example: Convert '2014-01-31' into 'January-31-2014'
+    ...
+    ...    ${variable}= | convert date format | 2014-01-31
+    # Cut year, month, date from input date
+    ${yyyy}=    Get Slice From List    ${input date}    0    4
+    ${mm}=    Get Slice From List    ${input date}    5    7
+    ${dd}=    Get Slice From List    ${input date}    8    10
+    # Convert month from number into text
+    ${mm}=    Set Variable If    '${mm}'=='01'    January    '${mm}'=='02'    February    '${mm}'=='03'
+    ...    March    '${mm}'=='04'    April    '${mm}'=='05'    May    '${mm}'=='06'
+    ...    June    '${mm}'=='07'    July    '${mm}'=='08'    August    '${mm}'=='09'
+    ...    September    '${mm}'=='10'    October    '${mm}'=='11'    November    '${mm}'=='12'
+    ...    December
+    # Return converted date
+    ${output date}=    Set Variable    ${mm}-${dd}-${yyyy}
+    [Return]    ${output date}
+
+split date
+    [Arguments]    ${date}
+    [Documentation]    This action is used to convert date from 'YYYY-MM-DD' format into 'MMM-DD-YYYY' format. Then split date into separate part: day, month, year.
+    ...
+    ...    Example: Convert *'2014-01-09'* into *'Jan-09-2014'* and split into *'9'*, *'Jan'*, *'2014'*.
+    ...
+    ...    ${variable}= | split date | 2014-01-09
+    # split day-month-year of from date
+    ${date}=    convert date format    ${date}
+    ${day}=    Get Slice From List    ${date}    4    6
+    ${dd11}=    Get Slice From List    ${day}    0    1
+    ${dd12}=    Get Slice From List    ${day}    1    2
+    Run Keyword If    '${dd11}'=='0'    Set Test Variable    ${day}    ${dd12}
+    ${month}=    Get Slice From List    ${date}    0    3
+    ${year}=    Get Slice From List    ${date}    7    11
+    [Return]    ${day}    ${month}    ${year}
+
+select date range
+    [Arguments]    ${from}    ${to}
+    [Documentation]    This action is used to select date of from-to listbox.
+    ...
+    ...    Example:
+    ...
+    ...    select date range | May-10-2015 | May-25-2015
+    ${from_day}    ${from_month}    ${from_year}    split date    ${from}
+    ${to_day}    ${to_month}    ${to_year}    split date    ${to}
+    # data validation
+    ${ac_month_status}    Run Keyword And Return Status    Should Be Equal    ${from_month}    ${to_month}
+    Run Keyword If    '${ac_month_status}'!='True'    Fail    Out of range. The input date ranges do not in the same month!
+    ${month}    Set Variable If    '${ac_month_status}'=='True'    ${from_month}
+    ${ac_year_status}    Run Keyword And Return Status    Should Be Equal    ${from_year}    ${to_year}
+    Run Keyword If    '${ac_year_status}'!='True'    Fail    Out of range. The input date ranges do not in the same year!
+    ${year}    Set Variable If    '${ac_year_status}'=='True'    ${from_year}
+    # select Month, Year
+    Click Element    ${dtpMonth}
+    Click Element    xpath=//li[@year='${year}']/ul/li/a[contains(text(),'${month}')]
+    # select From date
+    Mouse Over    ${lstFromDay}
+    Mouse Down    xpath=//div[@id='fromDay']/../div/ul/li[${from_day}]/a
+    Mouse Up    xpath=//div[@id='fromDay']/../div/ul/li[${from_day}]/a
+    # select To date
+    Mouse Over    ${lstToDay}
+    Mouse Down    xpath=//div[@id='toDay']/../div/ul/li[${to_day}]/a
+    Mouse Up    xpath=//div[@id='toDay']/../div/ul/li[${to_day}]/a
+
+convert date into month date year
+    [Arguments]    ${input date}
+    [Documentation]    This action is used to convert date from 'MMMM dd, yyyy' format into 'MMMM-dd-yyyy' format.
+    ...
+    ...    Example: Convert *'April 01, 2015'* into *'April-01-2015'*
+    ...
+    ...    ${variable}= | convert date into month date year | April 01, 2015
+    # Cut year, month, date from input date
+    ${MMMM}    ${dd}    ${yyyy}=    Split String    ${input date}
+    ${dd}=    Get Slice From List    ${dd}    0    2
+    # Return converted date
+    ${output date}=    Set Variable    ${MMMM}-${dd}-${yyyy}
+    [Return]    ${output date}
+
+create test directory
+    [Arguments]    ${export path}
+    [Documentation]    This action is used to create folder which will contain our exporting files.
+    ...
+    ...    Example:
+    ...
+    ...    create test directory | C:\\Test Data
+    ${result}=    Run Keyword And Return Status    Directory Should Exist    ${export path}
+    Run Keyword If    '${result}'!='True'    Create Directory    ${export path}
+
+create temporary path file
+    [Documentation]    This action creates a TXT file which contains temporary path.
+    ${ac_path_file}=    Set Variable    automation-temp-path.txt
+    # Get TEMP path folder
+    ${ac_temp}=    Get Environment Variable    TMP
+    # Check to delete if file existed
+    ${result}=    Run Keyword And Return Status    File Should Exist    ${ac_path_file}
+    Run Keyword If    '${result}'=='True'    Remove File    ${ac_path_file}
+    # Create TXT file containing the TEMP path folder
+    Create File    ${ac_path_file}    content=${ac_temp}
+
+check export excel function
+    [Arguments]    ${checked file name}
+    [Documentation]    This action is used to check Export To Excel function.
+    ...
+    ...    Example: Check file 'RunningBetList.xls' existed after exporting sucessfully. And exporting file need 5 seconds to be saved.
+    ...
+    ...    check export excel function | 5s | RunningBetList.xls
+    # Check to see Folder existed or not. If not, we'll create
+    create test directory    ${cf_export_dir}
+    # Click Export
+    Click Element    ${btnExportToExcel}
+    # Check file existed
+    wait for export file    ${cf_export_dir}${checked file name}
+    File Should Exist    ${cf_export_dir}${checked file name}
+    Sleep    3s
+    Empty Directory    ${cf_export_dir}
+
+check special case when no info available
+    [Documentation]    Special Case: If "No Information is available" text displays, we'll pass this test case since there is no data
+    ${ac_no_info_status}=    Run Keyword And Return Status    Page Should Contain    No Information Available
+    Run Keyword If    '${ac_no_info_status}'=='True'    Pass Execution    There is no report data at this moment.
+
+wait for export file
+    [Arguments]    ${filepath}
+    [Documentation]    This action is used to wait for a export file.
+    : FOR    ${ac_index}    IN RANGE    0    90
+    \    ${ac_exist}    Run Keyword And Return Status    File Should Exist    ${filepath}
+    \    ${ac_saving}    Run Keyword And Return Status    File Should Exist    ${filepath}.part
+    \    Run Keyword If    '${ac_exist}'!='True' or '${ac_saving}'=='True'    sleep    2s
+    \    Exit For Loop If    '${ac_index}'==90 or ('${ac_exist}'=='True' and '${ac_saving}'!='True')
+
+take applications screenshot
+    [Arguments]    ${site}    ${screenshot name}
+    [Documentation]    This action is used to take application screenshot.
+    ...
+    ...    ${site}= 'Product' or 'Local'
+    ${ac_today}=    Get Time    \    Now
+    # Cut year, month, date from input date
+    ${yyyy}=    Get Slice From List    ${ac_today}    0    4
+    ${mm}=    Get Slice From List    ${ac_today}    5    7
+    ${dd}=    Get Slice From List    ${ac_today}    8    10
+    # Return converted date
+    ${ac_today}=    Set Variable    ${yyyy}_${mm}_${dd}
+    ${ac_screenshot_directory}=    Set Variable    ${cf_screenshot_dir}${site}_${ac_today}\\OWA\\    #create subfolder: OWA
+    # Create directory for current date to contain screenshot
+    ${result}=    Run Keyword And Return Status    Directory Should Exist    ${ac_screenshot_directory}
+    Run Keyword If    '${result}'!='true'    Create Directory    ${ac_screenshot_directory}
+    # Take screenshot
+    Take Screenshot Without Embedding    ${ac_screenshot_directory}${screenshot name}
+
+check element on report
+    [Arguments]    ${checked element}
+    [Documentation]    This action is used to check an element on report.
+    ...
+    ...    Example:
+    ...
+    ...    check element on report | ${ checked element}
+    ${ac_element_status}=    Run Keyword And Return Status    Element Should Be Visible    ${checked element}
+    Run Keyword If    '${ac_element_status}'!='True'    Fail    Element does not exist. Please investigate the UI.
+
+check notes button
+    [Documentation]    This action is used to check show notes and hide notes button.
+    # show notes
+    Click Element    ${btnShowNotes}
+    check element on report    ${notes_tooltip}
+    # hide notes
+    Click Element    ${btnHideNotes}
+
+select draw type
+    [Arguments]    ${draw filter}
+    [Documentation]    This action is used to select type of draw.
+    ...
+    ...    ${draw filter}= *'Normal'* or *'No Draw'* or *'No Draw for Turnover only'*
+    ...
+    ...    Example:
+    ...
+    ...    select draw type | Normal
+    # select Draw filter
+    Run Keyword If    '${draw filter}'=='Normal'    Click Element    ${rbNormal}
+    Run Keyword If    '${draw filter}'=='No Draw'    Click Element    ${rbNoDraws}
+    Run Keyword If    '${draw filter}'=='No Draw for Turnover only'    Click Element    ${rbNoDrawsForTurnover}
+
+click element on report
+    [Arguments]    ${clicked element}
+    [Documentation]    This action is used to click an element on report.
+    ...
+    ...    Example:
+    ...
+    ...    click element on report | ${element}
+    Wait Until Element Is Visible    ${clicked element}
+    Click Element    ${clicked element}
+
+select date picker
+    [Arguments]    ${date type}    ${date}    # ${date type} = From OR To
+    [Documentation]    This action is used to select a specific date of calendar date picker.
+    ...
+    ...    Example:
+    ...
+    ...    select date picker | From | 2015-03-17
+    ...
+    ...    select date picker | To | 2015-03-18
+    # split specific date
+    ${yyyy1}=    Get Slice From List    ${date}    0    4
+    ${mm1}=    Get Slice From List    ${date}    5    7
+    ${mm11}=    Get Slice From List    ${date}    5    7
+    ${dd1}=    Get Slice From List    ${date}    8    10
+    # click date picker
+    Run Keyword If    '${date type}' == 'From'    click element on report    ${from_date picker}
+    Run Keyword If    '${date type}' == 'To'    click element on report    ${to_date picker}
+    # click Today
+    Run Keyword If    '${date type}' == 'From'    click element on report    ${from_date_picker_today}
+    Run Keyword If    '${date type}' == 'To'    click element on report    ${to_date_picker_today}
+    # select year in date picker
+    ${yyyy}=    Get Text    xpath=//div[@id='fd-${date type}Date']${date_picker_year}    #get year displayed on date picker
+    ${yyyy}=    Convert To Integer    ${yyyy}
+    @{ITEMS}    Create List    ${yyyy}    ${yyyy - 1}    ${yyyy - 2}    ${yyyy - 3}    ${yyyy - 4}
+    ...    ${yyyy - 5}
+    : FOR    ${ELEMENT}    IN    @{ITEMS}
+    \    Run Keyword If    '${ELEMENT}' != '${yyyy1}'    Click Element    xpath=//div[@id='fd-${date type}Date']${date_picker_previous_year}
+    \    Run Keyword If    '${ELEMENT}' == '${yyyy1}'    Exit For Loop
+    # Convert month from text into number
+    ${mm}=    Get Text    xpath=//div[@id='fd-${date type}Date']${date_picker_month}    #get month displayed on date picker
+    ${mm}=    Set Variable If    '${mm}'=='JANUARY${SPACE}'    1    '${mm}'=='FEBRUARY${SPACE}'    2    '${mm}'=='MARCH${SPACE}'
+    ...    3    '${mm}'=='APRIL${SPACE}'    4    '${mm}'=='MAY${SPACE}'    5    '${mm}'=='JUNE${SPACE}'
+    ...    6    '${mm}'=='JULY${SPACE}'    7    '${mm}'=='AUGUST${SPACE}'    8    '${mm}'=='SEPTEMBER${SPACE}'
+    ...    9    '${mm}'=='OCTOBER${SPACE}'    10    '${mm}'=='NOVEMBER${SPACE}'    11    '${mm}'=='DECEMBER${SPACE}'
+    ...    12
+    # Compare value between current month and user input month
+    ${mm1}=    Convert To Integer    ${mm1}
+    ${difference}=    Evaluate    int(${mm}) - ${mm1}
+    ${status}=    Evaluate    ${difference} > 0
+    ${steps}=    Evaluate    abs(${difference})
+    # select month in date picker
+    : FOR    ${INDEX}    IN RANGE    1    12
+    \    Run Keyword If    '${steps}' == 0    Exit For Loop
+    \    Run Keyword If    '${status}' == 'True'    Click Element    xpath=//div[@id='fd-${date type}Date']${date_picker_previous_month}
+    \    Run Keyword If    '${status}' != 'True'    Click Element    xpath=//div[@id='fd-${date type}Date']${date_picker_next_month}
+    \    Run Keyword If    '${INDEX}' == '${steps}'    Exit For Loop
+    # select day in date picker
+    Click Element    xpath=//div[@id='fd-${date type}Date']//td[contains(@class,'yyyymm-${yyyy1}${mm11} mmdd-${mm11}${dd1}')]
+
+select date picker range
+    [Arguments]    ${from date}    ${to date}
+    [Documentation]    This action is used to select date range of calendar date picker.
+    ...
+    ...    Example:
+    ...
+    ...    select date range | ${from date} | ${to date}
+    select date picker    From    ${from date}
+    select date picker    To    ${to date}
+
+select date
+    [Arguments]    ${date option}    ${from date}='None'    ${to date}='None'
+    [Documentation]    This action is used to select date option from dropdown list.
+    ...
+    ...    ${date option} = *'Date Range'* or *'Today'* or *'Yesterday'* or *'Current Week'* or *'Last Week'* or *'Current Month'* or *'Last Month'* or *'Since Last Month'*
+    ...
+    ...    Example:
+    ...
+    ...    select date | Current Month
+    ...
+    ...    select date| Date Range | ${from date} | ${to date}
+    Run Keyword If    '${date option}'!='None'    Select From List By Label    ${lstDate}    ${date option}
+    Run Keyword If    '${date option}'=='Date Range'    select date picker range    ${from date}    ${to date}
+
+select licensee from picker
+    [Arguments]    ${licensee}=All
+    [Documentation]    This action is used to select licensee from licensees picker.
+    ...
+    ...    ${licensee} = *'All'* or list of licensees (12Bet, asiabet88, etc.)
+    ...
+    ...    Example:
+    ...
+    ...    select licensee from picker | All
+    # Uncheck all licensees
+    Click Element    ${chkAllLicensees}
+    # Select licensees
+    Run Keyword If    '${licensee}'=='All'    Click Element    ${chkAllLicensees}
+    @{ac_licensee_list}=    Split String    ${licensee}    ,${SPACE}    # Split the licensee string
+    Log    list = @{ac_licensee_list}
+    : FOR    ${ELEMENT}    IN    @{ac_licensee_list}
+    \    Log    element = ${ELEMENT}
+    \    Run Keyword If    '${ELEMENT}'=='All'    Exit For Loop
+    \    ${ac_element_status}=    Run Keyword And Return Status    Element Should Be Visible    xpath=//div[@id='ResellerFilter']//label[contains(text(),'${ELEMENT}')]
+    \    Run Keyword If    '${ac_element_status}'=='True'    Click Element    xpath=//div[@id='ResellerFilter']//label[contains(text(),'${ELEMENT}')]    # set specific licensee checkboxes as ON
+
+select sports from picker
+    [Arguments]    ${sport}
+    [Documentation]    This action is used to select sport from sports picker.
+    ...
+    ...    ${sport} = *'All'* or *'Virtual Cycling'* or *'Virtual Greyhounds'* or *'Virtual Horse Racing'* or *'Virtual Motosports'* or *'Virtual Soccer'* or *'Virtual Speedway'* or *'Virtual Tennis'*
+    ...
+    ...    Example:
+    ...
+    ...    select sports from picker | All
+    ${VC}=    Run Keyword And Return Status    Should Contain    ${sport}    Virtual Cycling
+    ${VG}=    Run Keyword And Return Status    Should Contain    ${sport}    Virtual Greyhounds
+    ${VHR}=    Run Keyword And Return Status    Should Contain    ${sport}    Virtual Horse Racing
+    ${VM}=    Run Keyword And Return Status    Should Contain    ${sport}    Virtual Motorsports
+    ${VS}=    Run Keyword And Return Status    Should Contain    ${sport}    Virtual Soccer
+    ${VSp}=    Run Keyword And Return Status    Should Contain    ${sport}    Virtual Speedway
+    ${VT}=    Run Keyword And Return Status    Should Contain    ${sport}    Virtual Tennis
+    Run Keyword If    '${sport}'=='All'    Select Checkbox    xpath=//*[@id='select-all-sports'][@type='checkbox']
+    Run Keyword If    '${VC}'=='True'    Select Checkbox    xpath=//*[@id='sport-185'][@type='checkbox']
+    Run Keyword If    '${VG}'=='True'    Select Checkbox    xpath=//*[@id='sport-182'][@type='checkbox']
+    Run Keyword If    '${VHR}'=='True'    Select Checkbox    xpath=//*[@id='sport-181'][@type='checkbox']
+    Run Keyword If    '${VM}'=='True'    Select Checkbox    xpath=//*[@id='sport-184'][@type='checkbox']
+    Run Keyword If    '${VS}'=='True'    Select Checkbox    xpath=//*[@id='sport-180'][@type='checkbox']
+    Run Keyword If    '${VSp}'=='True'    Select Checkbox    xpath=//*[@id='sport-183'][@type='checkbox']
+    Run Keyword If    '${VT}'=='True'    Select Checkbox    xpath=//*[@id='sport-186'][@type='checkbox']
