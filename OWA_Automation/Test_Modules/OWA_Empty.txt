@@ -1,0 +1,25 @@
+*** Settings ***
+Suite Setup       config local
+Suite Teardown    Close Browser
+Test Teardown
+Library           Selenium2Library
+Library           OperatingSystem
+Library           Screenshot
+Library           Collections
+Library           String
+Library           Dialogs
+Library           Process
+Resource          ../Interfaces/01_Main_Interfaces/interface_login.txt
+Resource          ../Interfaces/01_Main_Interfaces/interface_main.txt
+Resource          ../Actions/01_Main_Actions/action_main.txt
+Resource          ../Actions/02_Total_Transaction/action_total_transaction.txt
+Resource          ../Actions/03_Win_Loss_Report/action_winloss_report.txt
+Resource          ../Actions/04_SunSport_Win_Loss/action_sunsport_winloss.txt
+Resource          ../Interfaces/03_Win_Loss_Report/interface_winloss_report.txt
+
+*** Test Cases ***
+TM_00_ST_Start web
+    [Tags]    CI
+    # 1. Open testing site
+    Open Browser    ${cf_url}    ${cf_browser}    ff_profile_dir=${cf_ff_profile_dir}
+    Maximize Browser Window
