@@ -26,8 +26,10 @@ config
     Set Suite Variable    ${cf_username}    pgmwilliam
     Set Suite Variable    ${cf_password}    1234test
     # Set Global Date Range
-    Set Suite Variable    ${cf_from}    NOW - 10d
-    Set Suite Variable    ${cf_to}    NOW - 2d
+    ${from}=    Set Variable    None
+    ${to}=    Set Variable    None
+    Set Suite Variable    ${cf_from}    ${from}
+    Set Suite Variable    ${cf_to}    ${to}
 
 config local
     [Documentation]    This action is used to set default configuration for entire scripts on *Local* environment.
@@ -37,7 +39,7 @@ config local
     Set Selenium Timeout    60s
     # Set Browser & URL testing
     Set Suite Variable    ${cf_browser}    ff
-    Set Suite Variable    ${cf_url}    http://10.18.200.209:8004/OWA2/VegasGames
+    Set Suite Variable    ${cf_url}    http://10.18.200.209:8004/OWA2/
     Set Suite Variable    ${cf_ff_profile_dir}    C:\\firefox_profile
     Set Suite Variable    ${cf_export_dir}    C:\\Test Data\\
     Set Suite Variable    ${cf_screenshot_dir}    C:\\Test Screenshot\\
@@ -45,8 +47,12 @@ config local
     Set Suite Variable    ${cf_username}    pgmchris
     Set Suite Variable    ${cf_password}    1234aa
     # Set Global Date Range
-    Set Suite Variable    ${cf_from}    NOW - 20d
-    Set Suite Variable    ${cf_to}    NOW - 8d
+    Comment    ${from}=    Get Time    \    NOW - 20d
+    Comment    ${to}=    Get Time    \    NOW - 12d
+    ${from}=    Set Variable    None
+    ${to}=    Set Variable    None
+    Set Suite Variable    ${cf_from}    ${from}
+    Set Suite Variable    ${cf_to}    ${to}
 
 login
     [Arguments]    ${username}    ${password}
