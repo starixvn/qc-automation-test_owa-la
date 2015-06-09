@@ -20,7 +20,7 @@ Resource          ../Interfaces/03_Win_Loss_Report/interface_winloss_report.txt
 *** Test Cases ***
 TM_00_ST_Start web
     [Tags]    CI
-    # 1. Open testing site
+    # 1. Open testing sites
     Open Browser    ${cf_url}    ${cf_browser}    ff_profile_dir=${cf_ff_profile_dir}
     Maximize Browser Window
     # 2. Login with valid account
