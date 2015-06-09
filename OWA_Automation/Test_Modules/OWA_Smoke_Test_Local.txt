@@ -1,6 +1,6 @@
 *** Settings ***
 Suite Setup       config local
-Suite Teardown    Close Browser
+Suite Teardown
 Test Teardown
 Library           Selenium2Library
 Library           OperatingSystem
@@ -51,7 +51,7 @@ TM_02_ST_WinLossReport_Sportsbook
     # date =
     # Type = Normal
     # sportsbook the same number game
-    submit filters for sportsbook/number game    asiabet88 (Fun88)    MYR    GBP    ${cf_from}    ${cf_to}    Normal
+    submit filters for sportsbook/number game    asiabet88 (Fun88)    MYR    None    ${cf_from}    ${cf_to}    Normal
     take applications screenshot    Local    TM_02_ST_WinLossReport_Sportsbook.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
@@ -71,7 +71,7 @@ TM_03_ST_WinLossReport_Number Game
     # based = GBP
     # date =
     # Type = Normal
-    submit filters for sportsbook/number game    12Bet (12Bet1)    All    GBP    ${cf_from}    ${cf_to}    Normal
+    submit filters for sportsbook/number game    12Bet    All    None    ${cf_from}    ${cf_to}    Normal
     take applications screenshot    Local    TM_03_ST_WinLossReport_NumberGame.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
@@ -89,8 +89,8 @@ TM_04_ST_WinLossReport_Virtual Sports
     # based = GBP
     # date =
     # Type = Normal
-    submit filters for virtual sports    12Bet (12Bet1)    Virtual Cycling, Virtual Greyhounds, Virtual Horse Racing, Virtual Speedway, Virtual Tennis    All    ${cf_from}    ${cf_to}    Normal
-    ...    GBP
+    submit filters for virtual sports    12Bet    Virtual Cycling, Virtual Greyhounds, Virtual Horse Racing, Virtual Speedway, Virtual Tennis    All    ${cf_from}    ${cf_to}    Normal
+    ...    None
     take applications screenshot    Local    TM_04_ST_WinLossReport_VirtualSports.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
@@ -102,8 +102,6 @@ TM_04_ST_WinLossReport_Virtual Sports
 TM_05_ST_WinLossReport_Live Casino
     # 1. Select Win Loss Report/ Live Casino
     select menu    Win Loss Report    Live Casino
-    # 2. Show/hide Notes
-    check notes button
     # 3. Select filters then click Submit button
     # licensee = 12 bet
     # currency = ALL
@@ -111,7 +109,7 @@ TM_05_ST_WinLossReport_Live Casino
     # date =
     # game type = All
     # Type = Normal
-    submit filters for live casino    12Bet (12Bet1)    All    GBP    ${cf_from}    ${cf_to}    All
+    submit filters for live casino    12Bet    All    None    ${cf_from}    ${cf_to}    All
     ...    Normal
     take applications screenshot    Local    TM_05_ST_WinLossReport_Live_Casino.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
@@ -130,7 +128,7 @@ TM_06_ST_WinLossReport_BA Win Loss
     # based = GBP
     # date =
     # Type = Normal
-    submit filters for ba winloss    DELA (1bet)    ALL    GBP    ${cf_from}    ${cf_to}    Normal
+    submit filters for ba winloss    12Bet    ALL    None    ${cf_from}    ${cf_to}    Normal
     take applications screenshot    Local    TM_06_ST_WinLossReport_BA_Win_Loss.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
@@ -143,7 +141,7 @@ TM_07_ST_Win Loss Report_AG Casino
     # 1. Select Win Loss Report/ AG Casino report
     select menu    Win Loss Report    AG Casino
     # 2. Select filters then click Submit button
-    submit filters for ag casino/gold deluxe    All    ${cf_from}    ${cf_to}    GBP    All    Normal
+    submit filters for ag casino/gold deluxe    All    ${cf_from}    ${cf_to}    None    All    Normal
     take applications screenshot    Local    TM_07_ST_WinLossReport_AG_Casino.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
@@ -156,7 +154,7 @@ TM_08_ST_WinLossReport_Gold Deluxe
     # 1. Select Win Loss Report/ Sportsbook
     select menu    Win Loss Report    Gold Deluxe
     # 2. Submit filters
-    submit filters for ag casino/gold deluxe    12Bet (12Bet1), spondemo    ${cf_from}    ${cf_to}    GBP    All    No Draw for Turnover only
+    submit filters for ag casino/gold deluxe    12Bet, spondemo    ${cf_from}    ${cf_to}    GBP    All    No Draw for Turnover only
     take applications screenshot    Local    TM_08_ST_WinLossReport_Gold_Deluxe.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
