@@ -160,8 +160,6 @@ TM_08_ST_WinLossReport_Gold Deluxe
     check special case when no info available
     # VP. Check data table
     check element on report    ${tblReport}
-    # VP. Check export file
-    check export excel function    GoldDeluxeWinLoss.*
 
 TM_09_ST_SunSport Win Loss
     ${from}=    Get Time    \    NOW - 40d
