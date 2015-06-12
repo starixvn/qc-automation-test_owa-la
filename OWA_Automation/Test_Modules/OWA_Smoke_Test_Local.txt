@@ -51,7 +51,7 @@ TM_02_ST_WinLossReport_Sportsbook
     # date =
     # Type = Normal
     # sportsbook the same number game
-    submit filters for sportsbook/number game    asiabet88 (Fun88)    MYR    None    ${cf_from}    ${cf_to}    Normal
+    submit filters for sportsbook/number game    12Bet    MYR    None    ${cf_from}    ${cf_to}    Normal
     take applications screenshot    Local    TM_02_ST_WinLossReport_Sportsbook.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
