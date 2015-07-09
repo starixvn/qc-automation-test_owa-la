@@ -143,8 +143,10 @@ TM_07_ST_Win Loss Report_AG Casino
     # 1. Select Win Loss Report/ AG Casino report
     select menu    Win Loss Report    AG Casino
     # 2. Select filters then click Submit button
-    submit filters for ag casino/gold deluxe    All    ${cf_from}    ${cf_to}    GBP    All    Normal
+    submit filters for ag casino/gold deluxe    All    ${cf_from}    ${cf_to}    GBP    CNY    Normal
     take applications screenshot    Product    TM_07_ST_WinLossReport_AG_Casino.jpg
+    # VP. Currency should not be rolled back to "ALL"
+    Comment    List Selection Should Be    ${lstCurrency}    CNY
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -156,8 +158,10 @@ TM_08_ST_WinLossReport_Gold Deluxe
     # 1. Select Win Loss Report/ Sportsbook
     select menu    Win Loss Report    Gold Deluxe
     # 2. Submit filters
-    submit filters for ag casino/gold deluxe    12Bet, spondemo    ${cf_from}    ${cf_to}    GBP    All    No Draw for Turnover only
+    submit filters for ag casino/gold deluxe    12Bet, spondemo    ${cf_from}    ${cf_to}    GBP    CNY    No Draw for Turnover only
     take applications screenshot    Product    TM_08_ST_WinLossReport_Gold_Deluxe.jpg
+    # VP. Currency should not be rolled back to "ALL"
+    Comment    List Selection Should Be    ${lstCurrency}    CNY
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -165,14 +169,29 @@ TM_08_ST_WinLossReport_Gold Deluxe
     # VP. Check export file
     check export excel function    GoldDeluxeWinLoss.*
 
-TM_09_ST_SunSport Win Loss
+TM_09_ST_WinLossreport_Macau
+    # 1. Select Win Loss Report/ Macau
+    select menu    Win Loss Report    Macau
+    # 2. Submit filters
+    submit filters for ag casino/gold deluxe    12Bet    ${cf_from}    ${cf_to}    GBP    CNY    No Draw for Turnover only
+    take applications screenshot    Product    TM_09_ST_WinLossReport_Macau.jpg
+    # VP. Currency should not be rolled back to "ALL"
+    Comment    List Selection Should Be    ${lstCurrency}    CNY
+    # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
+    check special case when no info available
+    # VP. Check data table
+    check element on report    ${tblReport}
+    # VP. Check export file
+    check export excel function    MacauWinLoss.*
+
+TM_10_ST_SunSport Win Loss
     ${from}=    Get Time    \    NOW - 40d
     ${to}=    Get Time    \    NOW - 32d
     # 1. Select SunSport Win Loss report
     select menu    SunSport Win Loss
     # 2. Submit filters
     submit filters for sunsport winloss    ALL    Monthly    Date Range    ${from}    ${to}    No Draw
-    take applications screenshot    Product    TM_09_ST_SunSport_Win_Loss.jpg
+    take applications screenshot    Product    TM_10_ST_SunSport_Win_Loss.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
