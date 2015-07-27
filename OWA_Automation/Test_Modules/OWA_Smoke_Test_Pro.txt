@@ -33,7 +33,7 @@ TM_01_ST_Total Transaction
     check notes button
     # 3. Submit filters
     submit filters for total transaction    ${cf_from}    ${cf_to}    None    Soccer
-    take applications screenshot    Product    TM_01_ST_Total_Transaction.jpg
+    take applications screenshot    OWA_Product    TM_01_ST_Total_Transaction.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -52,7 +52,7 @@ TM_02_ST_WinLossReport_Sportsbook
     # Type = Normal
     # sportsbook the same number game
     submit filters for sportsbook/number game    12Bet    MYR    GBP    ${cf_from}    ${cf_to}    Normal
-    take applications screenshot    Product    TM_02_ST_WinLossReport_Sportsbook.jpg
+    take applications screenshot    OWA_Product    TM_02_ST_WinLossReport_Sportsbook.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -72,7 +72,7 @@ TM_03_ST_WinLossReport_Number Game
     # date =
     # Type = Normal
     submit filters for sportsbook/number game    12Bet    All    GBP    ${cf_from}    ${cf_to}    Normal
-    take applications screenshot    Product    TM_03_ST_WinLossReport_NumberGame.jpg
+    take applications screenshot    OWA_Product    TM_03_ST_WinLossReport_NumberGame.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -91,7 +91,7 @@ TM_04_ST_WinLossReport_Virtual Sports
     # Type = Normal
     submit filters for virtual sports    12Bet    Virtual Cycling, Virtual Greyhounds, Virtual Horse Racing, Virtual Speedway, Virtual Tennis    All    ${cf_from}    ${cf_to}    Normal
     ...    GBP
-    take applications screenshot    Product    TM_04_ST_WinLossReport_VirtualSports.jpg
+    take applications screenshot    OWA_Product    TM_04_ST_WinLossReport_VirtualSports.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -113,7 +113,7 @@ TM_05_ST_WinLossReport_Live Casino
     # Type = Normal
     submit filters for live casino    12Bet    All    GBP    ${cf_from}    ${cf_to}    All
     ...    Normal
-    take applications screenshot    Product    TM_05_ST_WinLossReport_Live_Casino.jpg
+    take applications screenshot    OWA_Product    TM_05_ST_WinLossReport_Live_Casino.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -131,7 +131,7 @@ TM_06_ST_WinLossReport_BA Win Loss
     # date =
     # Type = Normal
     submit filters for ba winloss    DELA (1bet)    ALL    GBP    ${cf_from}    ${cf_to}    Normal
-    take applications screenshot    Product    TM_06_ST_WinLossReport_BA_Win_Loss.jpg
+    take applications screenshot    OWA_Product    TM_06_ST_WinLossReport_BA_Win_Loss.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
@@ -144,7 +144,7 @@ TM_07_ST_Win Loss Report_AG Casino
     select menu    Win Loss Report    AG Casino
     # 2. Select filters then click Submit button
     submit filters for ag casino/gold deluxe    All    ${cf_from}    ${cf_to}    GBP    CNY    Normal
-    take applications screenshot    Product    TM_07_ST_WinLossReport_AG_Casino.jpg
+    take applications screenshot    OWA_Product    TM_07_ST_WinLossReport_AG_Casino.jpg
     # VP. Currency should not be rolled back to "ALL"
     Comment    List Selection Should Be    ${lstCurrency}    CNY
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
@@ -159,7 +159,7 @@ TM_08_ST_WinLossReport_Gold Deluxe
     select menu    Win Loss Report    Gold Deluxe
     # 2. Submit filters
     submit filters for ag casino/gold deluxe    12Bet, spondemo    ${cf_from}    ${cf_to}    GBP    CNY    No Draw for Turnover only
-    take applications screenshot    Product    TM_08_ST_WinLossReport_Gold_Deluxe.jpg
+    take applications screenshot    OWA_Product    TM_08_ST_WinLossReport_Gold_Deluxe.jpg
     # VP. Currency should not be rolled back to "ALL"
     Comment    List Selection Should Be    ${lstCurrency}    CNY
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
@@ -174,7 +174,7 @@ TM_09_ST_WinLossreport_Macau
     select menu    Win Loss Report    Macau
     # 2. Submit filters
     submit filters for ag casino/gold deluxe    12Bet    ${cf_from}    ${cf_to}    GBP    CNY    No Draw for Turnover only
-    take applications screenshot    Product    TM_09_ST_WinLossReport_Macau.jpg
+    take applications screenshot    OWA_Product    TM_09_ST_WinLossReport_Macau.jpg
     # VP. Currency should not be rolled back to "ALL"
     Comment    List Selection Should Be    ${lstCurrency}    CNY
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
@@ -191,7 +191,7 @@ TM_10_ST_SunSport Win Loss
     select menu    SunSport Win Loss
     # 2. Submit filters
     submit filters for sunsport winloss    ALL    Monthly    Date Range    ${from}    ${to}    No Draw
-    take applications screenshot    Product    TM_10_ST_SunSport_Win_Loss.jpg
+    take applications screenshot    OWA_Product    TM_10_ST_SunSport_Win_Loss.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
     # VP. Check data table
