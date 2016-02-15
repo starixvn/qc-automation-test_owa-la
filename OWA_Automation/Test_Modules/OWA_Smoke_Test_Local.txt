@@ -1,6 +1,6 @@
 *** Settings ***
 Suite Setup       config local
-Suite Teardown    Close Browser
+Suite Teardown
 Test Teardown
 Library           Selenium2Library
 Library           OperatingSystem
@@ -71,7 +71,7 @@ TM_03_ST_WinLossReport_Number Game
     # based = GBP
     # date =
     # Type = Normal
-    submit filters for sportsbook/number game    12Bet    All    None    ${cf_from}    ${cf_to}    Normal
+    submit filters for sportsbook/number game    SunGame    All    None    ${cf_from}    ${cf_to}    Normal
     take applications screenshot    OWA_Local    TM_03_ST_WinLossReport_NumberGame.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
@@ -89,7 +89,7 @@ TM_04_ST_WinLossReport_Virtual Sports
     # based = GBP
     # date =
     # Type = Normal
-    submit filters for virtual sports    12Bet    Virtual Cycling, Virtual Greyhounds, Virtual Horse Racing, Virtual Speedway, Virtual Tennis    All    ${cf_from}    ${cf_to}    Normal
+    submit filters for virtual sports    SunGame    Virtual Cycling, Virtual Greyhounds, Virtual Horse Racing, Virtual Speedway, Virtual Tennis    All    ${cf_from}    ${cf_to}    Normal
     ...    None
     take applications screenshot    OWA_Local    TM_04_ST_WinLossReport_VirtualSports.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
@@ -109,7 +109,7 @@ TM_05_ST_WinLossReport_Live Casino
     # date =
     # game type = All
     # Type = Normal
-    submit filters for live casino    12Bet    All    None    ${cf_from}    ${cf_to}    All
+    submit filters for live casino    SunGame    All    None    ${cf_from}    ${cf_to}    All
     ...    Normal
     take applications screenshot    OWA_Local    TM_05_ST_WinLossReport_Live_Casino.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
@@ -128,7 +128,7 @@ TM_06_ST_WinLossReport_BA Win Loss
     # based = GBP
     # date =
     # Type = Normal
-    submit filters for ba winloss    12Bet    ALL    None    ${cf_from}    ${cf_to}    Normal
+    submit filters for ba winloss    SunGame    ALL    None    ${cf_from}    ${cf_to}    Normal
     take applications screenshot    OWA_Local    TM_06_ST_WinLossReport_BA_Win_Loss.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
