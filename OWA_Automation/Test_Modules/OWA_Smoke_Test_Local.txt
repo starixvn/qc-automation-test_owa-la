@@ -179,19 +179,3 @@ TM_09_ST_WinLossreport_Macau
     check element on report    ${tblReport}
     # VP. Check export file
     check export excel function    MacauWinLoss.*
-
-TM_10_ST_SunSport Win Loss
-    Comment    ${from}=    Get Time    \    NOW - 40d
-    Comment    ${to}=    Get Time    \    NOW - 32d
-    Comment    # 1. Select SunSport Win Loss report
-    Comment    select menu    SunSport Win Loss
-    Comment    # 2. Submit filters
-    Comment    submit filters for sunsport winloss    ALL    Monthly    Date Range    ${from}    ${to}
-    ...    No Draw
-    Comment    take applications screenshot    OWA_Local    TM_10_ST_SunSport_Win_Loss.jpg
-    Comment    # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
-    Comment    check special case when no info available
-    Comment    # VP. Check data table
-    Comment    check element on report    ${tblReport}
-    Comment    # VP. Check export file
-    Comment    check export excel function    SunSportWinLossReport.*
