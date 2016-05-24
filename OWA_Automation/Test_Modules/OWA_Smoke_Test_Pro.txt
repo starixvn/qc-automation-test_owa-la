@@ -130,7 +130,7 @@ TM_06_ST_WinLossReport_BA Win Loss
     # based = GBP
     # date =
     # Type = Normal
-    submit filters for ba winloss    DELA (1bet)    ALL    GBP    ${cf_from}    ${cf_to}    Normal
+    submit filters for ba winloss    DELA (1Bet)    ALL    GBP    ${cf_from}    ${cf_to}    Normal
     take applications screenshot    OWA_Product    TM_06_ST_WinLossReport_BA_Win_Loss.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
@@ -185,16 +185,17 @@ TM_09_ST_WinLossreport_Macau
     check export excel function    MacauWinLoss.*
 
 TM_10_ST_SunSport Win Loss
-    ${from}=    Get Time    \    NOW - 40d
-    ${to}=    Get Time    \    NOW - 32d
-    # 1. Select SunSport Win Loss report
-    select menu    SunSport Win Loss
-    # 2. Submit filters
-    submit filters for sunsport winloss    ALL    Monthly    Date Range    ${from}    ${to}    No Draw
-    take applications screenshot    OWA_Product    TM_10_ST_SunSport_Win_Loss.jpg
-    # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
-    check special case when no info available
-    # VP. Check data table
-    check element on report    ${tblReport}
-    # VP. Check export file
-    check export excel function    SunSportWinLossReport.*
+    Comment    ${from}=    Get Time    \    NOW - 40d
+    Comment    ${to}=    Get Time    \    NOW - 32d
+    Comment    # 1. Select SunSport Win Loss report
+    Comment    select menu    SunSport Win Loss
+    Comment    # 2. Submit filters
+    Comment    submit filters for sunsport winloss    All    Monthly    Date Range    ${from}    ${to}
+    ...    No Draw
+    Comment    take applications screenshot    OWA_Product    TM_10_ST_SunSport_Win_Loss.jpg
+    Comment    # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
+    Comment    check special case when no info available
+    Comment    # VP. Check data table
+    Comment    check element on report    ${tblReport}
+    Comment    # VP. Check export file
+    Comment    check export excel function    SunSportWinLossReport.*

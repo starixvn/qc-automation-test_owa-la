@@ -23,8 +23,8 @@ config
     Set Suite Variable    ${cf_export_dir}    C:\\Test Data\\
     Set Suite Variable    ${cf_screenshot_dir}    C:\\Test Screenshot\\
     # Set Global Variables
-    Set Suite Variable    ${cf_username}    pgmwilliam
-    Set Suite Variable    ${cf_password}    1234test
+    Set Suite Variable    ${cf_username}    starix101
+    Set Suite Variable    ${cf_password}    2323
     # Set Global Date Range
     ${from}=    Set Variable    None
     ${to}=    Set Variable    None
