@@ -1,6 +1,6 @@
 *** Settings ***
 Suite Setup       config local
-Suite Teardown
+Suite Teardown    Close Browser
 Test Teardown
 Library           Selenium2Library
 Library           OperatingSystem
@@ -51,7 +51,7 @@ TM_02_ST_WinLossReport_Sportsbook
     # date =
     # Type = Normal
     # sportsbook the same number game
-    submit filters for sportsbook/number game    Bodog    MYR    None    ${cf_from}    ${cf_to}    Normal
+    submit filters for sportsbook/number game    Bodog (Haydock)    MYR    None    ${cf_from}    ${cf_to}    Normal
     take applications screenshot    OWA_Local    TM_02_ST_WinLossReport_Sportsbook.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
     check special case when no info available
@@ -109,7 +109,7 @@ TM_05_ST_WinLossReport_Live Casino
     # date =
     # game type = All
     # Type = Normal
-    submit filters for live casino    SunGame    All    None    ${cf_from}    ${cf_to}    All
+    submit filters for live casino    12Bet    All    None    ${cf_from}    ${cf_to}    All
     ...    Normal
     take applications screenshot    OWA_Local    TM_05_ST_WinLossReport_Live_Casino.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
