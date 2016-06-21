@@ -109,7 +109,7 @@ TM_05_ST_WinLossReport_Live Casino
     # date =
     # game type = All
     # Type = Normal
-    submit filters for live casino    12Bet (updated new info)    All    None    ${cf_from}    ${cf_to}    All
+    submit filters for live casino    12Bet    All    None    ${cf_from}    ${cf_to}    All
     ...    Normal
     take applications screenshot    OWA_Local    TM_05_ST_WinLossReport_Live_Casino.jpg
     # Special Case: If "No Information Available" text displays, we'll pass this test case since there is no data
